@@ -1,4 +1,3 @@
-
 #!/bin/bash
 read_input()
 {
@@ -10,6 +9,7 @@ read_input()
 yellow='\033[033m'
 green='\033[032m'
 nc='\033[0m'
+echo `clear`
 printf "${green}Welcome ${nc}$USER ${green}to my custom shell!${nc}\n"
 printf "${green}Enter the help command to see a list of comamnd to use${nc}\n"
 printf "${green}Please enter a command: ${nc}\n"
@@ -17,17 +17,17 @@ history=()
 while true
 do
         read_input
-        case $command in
-        pw*)    pwd
+        case ${command[0]} in
+        pw)     pwd
                 history+=("$command")
                 ;;
-        ifc*)   if [ ${#command[@]} == 1 ]
+        ifc)    if [ ${#command[@]} == 1 ]
                 then
                         ifconfig eth0
                         history+=("$command")
                 elif [ ${command[1]} == man ]
                 then
-                        printf "ifc automatically displays eth0 interface configuration.\n"
+                        printf "ifc automatically displays eth0 interface cofiguration.\n"
                         printf "To see other interface configurations append the name of the interface to ifc.\n"
                 else
                         ifconfig ${command[1]}
@@ -37,8 +37,8 @@ do
                 ;;
         ud)     python stat.py
                 ;;
-        help)   echo "pw - Displays working directory"
- 		echo "ifc - Displays the network interfaces configuration. Enter ifc man for more info"
+		 help)   echo "pw - Displays working directory"
+                echo "ifc - Displays the network interfaces configuration. Enter ifc man for more info"
                 echo "dt - Displays the date and time"
                 echo "ud - Displays username, groupname, user id group id, iNode of Home directory"
                 echo "setshell - Sets the default shell of the user"
@@ -57,8 +57,8 @@ do
                 echo `mkdir $filename`
                 ;;
         ls)     ls
-                ;;
-	 setshell) read -e -r -p $'\e[32mEnter the name of the application file: \e[33m' filename
+		 ;;
+        setshell) read -e -r -p $'\e[32mEnter the name of the application file: \e[33m' filename
                   echo -e -n "\e[0;0m"
                   echo `sudo usermod -s  $filename $USER`
                   printf "${green}Default shell updated. Logout and login to run shell.${nc}\n"
@@ -67,10 +67,9 @@ do
                 ;;
         clear)  clear
                 ;;
-        *)      printf "Error\n"
+        *)      printf "Error ${command[0]} not a command\n"
                 ;;
         esac
 done
-
 
 
